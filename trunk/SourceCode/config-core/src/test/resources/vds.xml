@@ -1,0 +1,18 @@
+<vds>
+	<sharding>
+		<table schema="VDS" name="TEST_TF_F_USER_3001">
+			<!-- VDS采用Schema+TableName作为表的唯一标识，若不同数据源中同名表均被激活，则必须配置分表 -->
+			<partition id="1">
+				<!-- 此处id与driver-id一一对应, 分区id即数据源id -->
+				<accept>
+					<!-- 填写此分区数据的约束条件，与Oracle的check约束相似 -->
+				<![CDATA[ 1=2 ]]>
+				</accept>
+				<accept2>
+					<!-- 填写此分区数据的约束条件，与Oracle的check约束相似 -->
+				<![CDATA[ 1=2 ]]>
+				</accept2>
+			</partition>
+		</table>
+	</sharding>
+</vds>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd   
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+    http://www.springframework.org/schema/context  
+    http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+    <bean id="myBeanPost" class="com.tydic.config.load.ZookeeperBeanPost">
+    
+    	<!-- 设置根路径，用于指定配置所在zookeeper path 默认为/Configuration/default-->
+    	<!-- <property name="root" value="/Configuration/default"></property> -->
+    	
+    	<!-- 配置zookeeper ip port  -->
+    	<property name="hosts" value="172.168.1.215:2281"></property>
+    	
+    	<!-- 配置编码（默认utf-8）  -->
+    	<property name="charset" value="utf-8"></property>
+    	
+    	<!-- 需要加载的配置文件名  -->
+    	<!--<property name="configName" value="applicationContext.xml"></property>-->
+    	<!-- 需要加载的配置文件path  -->
+    	<property name="configPath" value="vdsConfig"></property>
+    </bean>
+</beans>  

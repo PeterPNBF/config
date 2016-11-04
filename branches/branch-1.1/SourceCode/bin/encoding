@@ -1,0 +1,2 @@
+#This file is used for config.sh read -Dfile.encoding
+ENCODING="utf8"

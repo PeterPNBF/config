@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+	
+	<bean id="com.tydic.test.SelectFromTestBFragments" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.SelectFromTestBFragments"></property>
+		<property name="content">
+			<value><![CDATA[SELECT * FROM test_b_fragments
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.single.CommonService"></property>
+	</bean>
+	<bean id="com.tydic.test.UpdateTestBFragments" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.UpdateTestBFragments"></property>
+		<property name="content">
+			<value><![CDATA[update test_b_fragments set marriagedate=? where id=?
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.UpdateType1"></property>
+	</bean>
+	<bean id="com.tydic.test.DeleteTestBFragments" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.DeleteTestBFragments"></property>
+		<property name="content">
+			<value><![CDATA[delete from test_b_fragments where id=?
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.DeleteType1"></property>
+	</bean>
+	<bean id="com.tydic.test.DeleteTestBFragments2" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.DeleteTestBFragments2"></property>
+		<property name="content">
+			<value><![CDATA[delete from test_b_fragments where id>?
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.DeleteType1"></property>
+	</bean>
+	<bean id="com.tydic.test.Insert3TestBFragments" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.Insert3TestBFragments"></property>
+		<property name="content">
+			<value><![CDATA[Insert into test_b_fragments(id,age,name)  select id, age, name from test_user_3
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.InsertType3"></property>
+	</bean>
+	<bean id="com.tydic.test.Insert2TestBFragments" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.Insert2TestBFragments"></property>
+		<property name="content">
+			<value><![CDATA[insert into test_b_fragments(id,age,name,birthdate,marriagedate,profile,story,notes,classified) values(?,?,?,?,?,?,?,?,?)]]>
+			</value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.InsertType2"></property>
+	</bean>
+	<bean id="com.tydic.test.Insert1TestBFragments" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.Insert1TestBFragments"></property>
+		<property name="content">
+			<value><![CDATA[insert into test_b_fragments(id,age,name,birthdate,marriagedate,profile,story,notes,classified) values(?,?,?,?,?,?,?,?,?)
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.InsertType1"></property>
+	</bean>
+	<bean id="com.tydic.test.SelectAllFromTestBFragments" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.SelectAllFromTestBFragments"></property>
+		<property name="content">
+			<value><![CDATA[SELECT * FROM test_b_fragments 
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.single.CommonService"></property>
+	</bean>
+	<bean id="com.tydic.test.SelectType3TestBFragments" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.SelectType3TestBFragments"></property>
+		<property name="content">
+			<value><![CDATA[select id,age,name,birthdate,marriagedate,profile,story,notes,classified, curdate from (select id, age ,name,birthdate,marriagedate,profile,story,notes,classified,sysdate curdate from test_b_fragments order by dbms_random.value())
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.SelectType3"></property>
+	</bean>
+	
+	<bean id="com.tydic.test.SelectFromTestBFragmentsWithFunc" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.SelectFromTestBFragmentsWithFunc"></property>
+		<property name="content">
+			<value><![CDATA[SELECT id, age , name , to_char(birthdate, 'YYYY-DD-MM HH24:MI:SS.FF') birthdate,to_char(marriagedate, 'YYYY-DD-MM HH24:MI:SS.FF') marriagedate, profile, story, notes FROM test_b_fragments
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.SelectType2"></property>
+	</bean>
+	
+	<bean id="com.tydic.test.UpdateTestBFragments2" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.UpdateTestBFragments2"></property>
+		<property name="content">
+			<value><![CDATA[update test_b_fragments set profile=? where id=?
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.UpdateType1"></property>
+	</bean>
+</beans>

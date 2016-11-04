@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	">
+	<!-- 配置底层数据源，vds内部将采用此配置连接到物理库。采用dbcp连接池，配置方式请查阅apache dbcp文档，下例dataSource1配置为示例配置 -->
+	<bean id="dataSource1" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://172.168.1.215:3307" />
+		<property name="username" value="vds" />
+		<property name="password" value="tydic" />
+		 <!--maxActive: 最大连接数量-->
+		<property name="maxActive" value="20" />
+		<!--minIdle: 最小空闲连接-->
+		<property name="minIdle" value="1" />
+		<!--initialSize: 初始化连接数量-->
+		<property name="initialSize" value="1" />
+		<!--maxWait: 超时等待时间以毫秒为单位-->
+		<property name="maxWait" value="60000" />
+		<!-- 连接在池中保持空闲而不被空闲连接回收器线程,以毫秒为单位.-->
+		<property name="minEvictableIdleTimeMillis" value="600000"/> 
+		<!-- 在空闲连接回收器线程运行期间休眠的时间值,以毫秒为单位. -->
+		<property name="timeBetweenEvictionRunsMillis" value="10000"/>
+		<!-- SQL查询,用来验证从连接池取出的连接-->
+		<property name="validationQuery" value="SELECT 1 FROM DUAL"/> 
+	</bean>
+	<bean id="dataSource2" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://172.168.1.215:3308" />
+		<property name="username" value="vds" />
+		<property name="password" value="tydic" />
+	</bean>
+	<bean id="dataSource3" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://172.168.1.215:3309" />
+		<property name="username" value="vds" />
+		<property name="password" value="tydic" />
+	</bean>
+	<!-- 配置vds后端,即为配置了id的DataSource -->
+	<bean id="backend1" class="com.tydic.vds.backend.jdbc.JdbcDatabase">
+		<!-- 配置数据源id, id=0为vds内部保留id号，不可用 -->
+		<property name="id" value="1"></property>
+		<property name="dataSource" ref="dataSource1"></property>
+	</bean>
+	<bean id="backend2" class="com.tydic.vds.backend.jdbc.JdbcDatabase">
+		<property name="id" value="2"></property>
+		<property name="dataSource" ref="dataSource2"></property>
+	</bean>
+	<bean id="backend3" class="com.tydic.vds.backend.jdbc.JdbcDatabase">
+		<property name="id" value="3"></property>
+		<property name="dataSource" ref="dataSource3"></property>
+	</bean>
+</beans>

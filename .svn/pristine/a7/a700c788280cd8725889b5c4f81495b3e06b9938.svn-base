@@ -1,0 +1,8 @@
+
+./config.sh write -p interf@172.168.1.242:/public/interf/yuhm/copy/config/vdsConfig
+./config.sh delete vdsConfig
+./config.sh write -f interf@172.168.1.242:/public/interf/yuhm/copy/config/vdsConfig/applicationContext.xml
+./config.sh ls
+scp interf@172.168.1.242:/public/interf/yuhm/copy/config/lib/config-client-1.0.jar ../lib
+./config.sh read -f applicationContext.xml
+scp interf@172.168.1.242:/public/interf/yuhm/copy/config/lib/config-core-1.0.jar ../lib

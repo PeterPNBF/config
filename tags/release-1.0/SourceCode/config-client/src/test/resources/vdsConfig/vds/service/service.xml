@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+		
+	<bean id="com.tydic.test.SelectFromTestAPartitions" class="com.tydic.vds.spring.PredefinedProcedure">
+		<!-- name为服务名，对应vds1版本配置vds.xml中/vds/services/service/@code -->
+		<property name="name" value="com.tydic.test.SelectFromTestAPartitions"></property>
+		<!-- content为sql配置，对应vds1版本配置vds.xml中/vds/services/service/script -->
+		<property name="content">
+			<value><![CDATA[SELECT * FROM (select a.*,rownum rn from test_a_partitions a where rownum<4) where rn>1
+			]]></value>
+		</property>
+		<!-- executorClazz为执行类，对应vds1版本配置vds.xml中/vds/services/service/@clazz -->
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.SelectType2"></property>
+	</bean>
+	<bean id="com.tydic.test.xxxService" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.crm.xxxService"></property>
+		<property name="content">
+			<value><![CDATA[SELECT * FROM test_b_fragments WHERE ID = ?
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.single.CommonService"></property>
+	</bean>
+
+<!-- 	<bean id="com.tydic.test.SelectFromTestAPartitions" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.SelectFromTestAPartitions"></property>
+		<property name="content">
+			<value><![CDATA[select id, sum(cnt) from( select id, count(*) cnt from test_a_partitions group by id) group by id
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.SelectType3"></property>
+	</bean> -->
+<!-- 	<bean id="com.tydic.test.SelectFromTestAPartitions" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.SelectFromTestAPartitions"></property>
+		<property name="content">
+			<value><![CDATA[select id, name, age from test_a_partitions union select id, name,age from test_user
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.SelectType2"></property>
+	</bean> -->
+	<bean id="vds.test.deleteclob" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="vds.test.deleteclob"></property>
+		<property name="content">
+			<value><![CDATA[delete from vds.test_user_sun where id=?
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.DeleteType1"></property>
+	</bean>
+	<bean id="vds.test.updateclob" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="vds.test.updateclob"></property>
+		<property name="content">
+			<value><![CDATA[update vds.test_user_sun set NAME=?, AGE=?, TESTCLOB=?, TESTNVARCHAR=?, TESTNCLOB=? where id=?
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.UpdateType1"></property>
+	</bean>
+	<bean id="vds.shard.insertType1" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="vds.shard.insertType1"></property>
+		<property name="content">
+			<value><![CDATA[insert into vds.test_user_sun (ID, NAME, AGE, TESTCLOB, TESTNVARCHAR, TESTNCLOB) values (?,?,?,?,?,?) 
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.InsertType1"></property>
+	</bean>
+	<bean id="vds.shard.selectType12" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="vds.shard.selectType12"></property>
+		<property name="content">
+			<value><![CDATA[select * from vds.test_user_sun
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.SelectType2"></property>
+	</bean>
+	<bean id="com.tydic.test.UpdateTestAPartitions" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.UpdateTestAPartitions"></property>
+		<property name="content">
+			<value><![CDATA[update test_a_partitions set profile=? where id=?
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.UpdateType1"></property>
+	</bean>
+	<bean id="com.tydic.test.UpdateTestAPartitions2" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.UpdateTestAPartitions2"></property>
+		<property name="content">
+			<value><![CDATA[update test_a_partitions set marriagedate=? where id=?
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.UpdateType1"></property>
+	</bean>
+	<bean id="com.tydic.test.DeleteTestAPartitions" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.DeleteTestAPartitions"></property>
+		<property name="content">
+			<value><![CDATA[delete from test_a_partitions where id=?
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.DeleteType1"></property>
+	</bean>
+	<bean id="com.tydic.test.Insert3TestAPartitions" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.Insert3TestAPartitions"></property>
+		<property name="content">
+			<value><![CDATA[Insert into test_a_partitions(id,age,name)  select id, age, name from test_user;
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.InsertType3"></property>
+	</bean>
+	<bean id="com.tydic.test.Insert2TestAPartitions" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.Insert2TestAPartitions"></property>
+		<property name="content">
+			<value><![CDATA[insert into test_a_partitions(id,age,name,birthdate,marriagedate,profile,story,notes,classified) values(?,?,?,?,?,?,?,?,?)
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.InsertType2"></property>
+	</bean>
+	<bean id="com.tydic.test.Insert1TestAPartitions" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.Insert1TestAPartitions"></property>
+		<property name="content">
+			<value><![CDATA[insert into test_a_partitions(id,age,name,birthdate,marriagedate,profile,story,notes,classified) values(?,?,?,?,?,?,?,?,?)
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.InsertType1"></property>
+	</bean>
+	<bean id="com.tydic.test.SelectAllFromTestAPartitions" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.SelectAllFromTestAPartitions"></property>
+		<property name="content">
+			<value><![CDATA[SELECT * FROM test_a_partitions 
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.SelectType2"></property>
+	</bean>
+	<bean id="com.tydic.test.SelectType3" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.SelectType3"></property>
+		<property name="content">
+			<value><![CDATA[select id,age,name,birthdate,marriagedate,profile,story,notes,classified, curdate from (select id, age ,name,birthdate,marriagedate,profile,story,notes,classified,sysdate curdate from test_a_partitions order by dbms_random.value())
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.SelectType3"></property>
+	</bean>
+	
+	<bean id="com.tydic.test.SelectFromTestAPartitionsWithFunc" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.SelectFromTestAPartitionsWithFunc"></property>
+		<property name="content">
+			<value><![CDATA[SELECT id, age , name , to_char(birthdate, 'YYYY-DD-MM HH24:MI:SS.FF') birthdate,to_char(marriagedate, 'YYYY-DD-MM HH24:MI:SS.FF') marriagedate, profile, story, notes FROM test_a_partitions
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.SelectType2"></property>
+	</bean>
+	
+	<bean id="com.tydic.test.SelectFromTestEPartitionsWithFunc" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.SelectFromTestAPartitionsWithFunc"></property>
+		<property name="content">
+			<value><![CDATA[SELECT id, age , name , to_char(birthdate, 'YYYY-DD-MM HH24:MI:SS.FF') birthdate,to_char(marriagedate, 'YYYY-DD-MM HH24:MI:SS.FF') marriagedate, profile, story, notes FROM test_a_partitions
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.SelectType2"></property>
+	</bean>
+	
+	<bean id="com.tydic.test.SingleSelectFromTestAPartitions" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.SingleSelectFromTestAPartitions"></property>
+		<property name="content">
+			<value><![CDATA[SELECT * from TEST_TF_F_USER where user_id=? and rownum<2
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.single.CommonService"></property>
+	</bean>
+</beans>

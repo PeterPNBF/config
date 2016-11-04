@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd   
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+    http://www.springframework.org/schema/context  
+    http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+
+	<!-- 配置vds环境，用于加载以上数据源、分区分片规则、表及服务配置 -->
+	<bean
+		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+	<bean id="scanner" class="com.tydic.vds.spring.ListScanner" />
+	<bean class="com.tydic.vds.spring.Environment">
+		<!-- 配置url，程序创建连接时vds仅接受相同特征的url，url中sid=demo为此特征串，若无此项url需严格相等，loaddb=false表示不加载数据库配置，与采用新版配置或classpath中无vds.properties等效。 -->
+		<property name="url"
+			value="jdbc:vds:local://classpath?sid=demo&amp;loaddb=false" />
+		<!-- value="jdbc:vds:local://classpath?loadxml=true&amp;xmlfile=oldConfig/vds.xml&amp;directsql=true&amp;loaddb=false" 
+			/> -->
+		<!-- 配置兼容vds1版本配置，该配置下将同时加载vds.xml及vds.properties所配数据库中配置，如非必要建议使用新版配置即不配此项 -->
+		<!-- <property name="compatible" value="V1" /> -->
+		<!-- 加载后端数据源，该配置装载vds/backend.xml中vds后端配置 -->
+		<property name="backends">
+			<list>
+				<ref bean="backend1"></ref>
+				<ref bean="backend2"></ref>
+				<ref bean="backend3"></ref>
+			</list>
+		</property>
+		<!-- 加载配置文件中所有逻辑表，此项不需改动 -->
+		<property name="tableList">
+			<bean factory-bean="scanner" factory-method="getTableList"></bean>
+		</property>
+
+		<!-- 加载配置文件中所有服务项，此项不需改动 -->
+		<property name="procedures">
+			<bean factory-bean="scanner" factory-method="getProcedures"></bean>
+		</property>
+	</bean>
+</beans>  

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+	<!-- 配置表 -->
+	
+	<!-- id为bean id 仅作为spring加载使用，class中util.RegularTable采用表名正则匹配，CommonTable表名需严格相等 -->
+  	<bean id="test_a_partitions" class="com.tydic.vds.spring.CommonTable">
+ 		<!-- schema为数据库用户名 -->
+		<property name="schema" value="vds"></property>
+		<!-- name为表名，'%'匹配任意字符,'_'匹配单个字符,转移字符为'/' -->
+		<property name="name" value="TEST_A_PARTITIONS"></property>
+		<!-- 该表所包含的分区，该引用bean配置位于rule.xml中 -->
+		<property name="partitions">
+			<list>
+				<ref bean="test_a_partitions_A"/>
+				<ref bean="test_a_partitions_B"/>
+				<ref bean="test_a_partitions_C"/>
+			</list>
+		</property>
+	</bean>
+	
+		<!-- id为bean id 仅作为spring加载使用，class中util.RegularTable采用表名正则匹配，CommonTable表名需严格相等 -->
+<!--   	<bean id="test_a_partitions" class="com.tydic.vds.spring.util.RegularTable">
+		<property name="schema" value="vds"></property>
+		<property name="name" value="TEST_A_PARTITIONS"></property>
+		<property name="partitions">
+			<list>
+				<ref bean="test_a_partitions_A"/>
+				<ref bean="test_a_partitions_B"/>
+				<ref bean="test_a_partitions_C"/>
+			</list>
+		</property>
+	</bean> -->
+<!-- 	<bean id="test_b_fragments" class="com.tydic.vds.spring.CommonTable">
+		<property name="schema" value="vds"></property>
+		<property name="name" value="test_b_fragments"></property>
+		<property name="partition" ref="partWithFrags"></property>
+	</bean>
+ 	<bean id="test_user" class="com.tydic.vds.spring.CommonTable">
+		<property name="schema" value="vds"></property>
+		<property name="name" value="test_user"></property>
+		<property name="partitions">
+			<list>
+				<ref bean="test_a_partitions_A"/>
+				<ref bean="test_a_partitions_B"/>
+			</list>
+		</property>
+	</bean>
+ 	<bean id="test_user_sun" class="com.tydic.vds.spring.CommonTable">
+		<property name="schema" value="vds"></property>
+		<property name="name" value="test_user_sun"></property>
+		<property name="partitions">
+			<list>
+				<ref bean="test_a_partitions_A"/>
+				<ref bean="test_a_partitions_B"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="USER_DUAL" class="com.tydic.vds.spring.CommonTable">
+		<property name="schema" value="VDS"></property>
+		<property name="name" value="USER_DUAL"></property>
+		<property name="partition" ref="baseA"></property>
+	</bean>
+	<bean id="TEST_TF_F_USER" class="com.tydic.vds.spring.CommonTable">
+		<property name="schema" value="VDS"></property>
+		<property name="name" value="TEST_TF_F_USER"></property>
+		<property name="partition" ref="baseA"></property>
+	</bean>
+ 	<bean id="test_e_partitions" class="com.tydic.vds.spring.CommonTable">
+		<property name="schema" value="VDS"></property>
+		<property name="name" value="test_e_partitions"></property>
+		<property name="partition" ref="baseB"></property>
+	</bean>
+ 	<bean id="test_user_3" class="com.tydic.vds.spring.CommonTable">
+		<property name="schema" value="vds"></property>
+		<property name="name" value="test_user_3"></property>
+		<property name="partitions" ref="baseA"></property>
+	</bean>
+ 	<bean id="test_date" class="com.tydic.vds.spring.util.RegularTable">
+		<property name="schema" value="vds"></property>
+		<property name="name" value="test_dat_"></property>
+		<property name="partitions" ref="baseC"></property>
+	</bean> -->
+</beans>

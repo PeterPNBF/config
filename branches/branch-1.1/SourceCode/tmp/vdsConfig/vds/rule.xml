@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	">
+	<!-- 配置分区 -->
+	<bean id="baseA" class="com.tydic.vds.spring.CommonPartition">
+		<!-- database表示该分区位于backend1-->
+		<property name="database" ref="backend1"></property>
+	</bean>
+	<bean id="baseB" class="com.tydic.vds.spring.CommonPartition">
+		<property name="database" ref="backend2"></property>
+	</bean>
+	<bean id="baseC" class="com.tydic.vds.spring.CommonPartition">
+		<property name="database" ref="backend3"></property>
+	</bean>
+	<bean id="partB" class="com.tydic.vds.spring.CommonPartition"
+		parent="baseB">
+		<property name="constraint" value="USER_ID != 100"></property>
+	</bean>
+	<bean id="partA" class="com.tydic.vds.spring.CommonPartition"
+		parent="baseA">
+		<!-- constraint表示该分区条件-->
+		<property name="constraint" value="USER_ID = 100"></property>
+	</bean>
+	<bean id="test_a_partitions_A" class="com.tydic.vds.spring.CommonPartition"
+		parent="baseA">
+		<property name="constraint" value="mod(ID,3)=0"></property>
+	</bean>
+	<bean id="test_a_partitions_B" class="com.tydic.vds.spring.CommonPartition"
+		parent="baseB">
+		<property name="constraint" value="mod(ID,3)=1"></property>
+	</bean>
+	<bean id="test_a_partitions_C" class="com.tydic.vds.spring.CommonPartition"
+		parent="baseC">
+		<property name="constraint" value="mod(ID,3)=2"></property>
+	</bean>
+	<bean id="partWithFrags" class="com.tydic.vds.spring.CommonPartition"
+		parent="baseA">
+		<!-- fragments表示该分区包含分表(同库同用户，实际数据表表名后缀不同)，-->
+		<property name="fragments">
+			<list>
+				<bean class="com.tydic.vds.spring.CommonFragment">
+					<!-- constraint表示该分表的分表条件-->
+					<property name="constraint" value="mod(ID,2) = 1"></property>
+					<!-- suffix表示该分表的后缀-->
+					<property name="suffix" value="_01"></property>
+				</bean>
+				<bean class="com.tydic.vds.spring.CommonFragment">
+					<property name="constraint" value="mod(ID,2) = 0"></property>
+					<property name="suffix" value="_02"></property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+</beans>

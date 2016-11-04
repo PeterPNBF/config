@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+	<!-- 配置表 -->
+	
+	<!-- 该bean配置表名必须严格相同, vds需要明确指明加载哪些表, 不再支持表名正则匹配 -->
+	<bean id="TEST_D_PARTITIONS_FRAGMENTS" class="com.tydic.vds.spring.SimpleTable">
+		<!-- oracle中为用户名,mysql中为database名 -->
+ 		<property name="schema" value="VDS"/>
+ 		<!-- 表名 -->
+		<property name="name" value="TEST_D_PARTITIONS_FRAGMENTS"/>
+		<!-- 分库键,多个以','分隔 -->
+		<property name="keyColumns" value="ID"/>
+		<!-- var为定义变量语法，后加';'。 case when语法中case后必须为某一变量，可为字符串。when分支末尾加';'。 then部分写法为'分库id|分表后缀'，若不包含分表，则为'分库id' -->
+		<property name="classifier">
+			<value>
+				var modId=mod(id,2);
+				case modId
+				when range(1,2,1,0)  then 'backend1|_01';
+				when range(0,1,1,0)  then 'backend1|_02';
+				end case;
+			</value>
+		</property>
+	</bean>
+	
+	<bean id="test_f_partitions" class="com.tydic.vds.spring.SimpleTable">
+ 		<property name="schema" value="vds"/>
+		<property name="name" value="TEST_F_PARTITIONS"/>
+		<property name="keyColumns" value="NAME"/>
+		<property name="classifier">
+			<value>
+				var subStrName=substr(NAME,1,9);
+				case subStrName
+				when 'Las Vegas'  then 'backend1';
+				when 'Californi'  then 'backend2';
+				end case;
+			</value>
+		</property>
+	</bean>
+	
+ 	<bean id="test_e_partitions" class="com.tydic.vds.spring.SimpleTable">
+		<property name="schema" value="VDS"></property>
+		<property name="name" value="test_e_partitions"></property>
+		<!-- 单表要配置location指明表位置 -->
+		<property name="location" value="2"/>
+	</bean>
+	<!-- /beans/bean[@class='com.tydic.vds.spring.SimpleTable' and property[1][@value='VDS']] and property[2][@value='test_e_partitions']] -->
+	
+	<bean id="test_H_partitions" class="com.tydic.vds.spring.SimpleTable">
+ 		<property name="schema" value="vds"/>
+		<property name="name" value="TEST_H_PARTITIONS"/>
+		<property name="keyColumns" value="ID,BIRTHDATE"/>
+		<property name="location">
+			<value>
+			 1|_01;1|_02;1|_03;1|_04;1|_05;1|_06;1|_07;1|_08;1|_09;1|_10;1|_11;1|_12;
+			 2|_01;2|_02;2|_03;2|_04;2|_05;2|_06;2|_07;2|_08;2|_09;2|_10;2|_11;2|_12
+			</value>
+		</property>
+		<property name="classifier">
+			<value>
+				var modId=mod(id,2);
+				var birMonth=to_char(BIRTHDATE,'mm');
+				case modId
+				when range(1,2,1,0)  then ( 
+					concat('1|_', birMonth )
+    			);
+    			when range(0,1,1,0)  then ( 
+      				concat('2|_', birMonth )
+    			);
+    			end case;
+			</value>
+		</property>
+	</bean>
+	
+
+	<bean id="tableDynamicUpdater" class="com.tydic.vds.spring.TableDynamicUpdater">
+		<property name="targets">
+			<list>
+				<value>TEST_D_PARTITIONS_FRAGMENTS</value>
+			</list>
+		</property>
+	</bean>
+</beans>

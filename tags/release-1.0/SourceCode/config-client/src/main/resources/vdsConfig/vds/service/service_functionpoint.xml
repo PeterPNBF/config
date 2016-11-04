@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+	<bean id="com.tydic.test.SelectFromDual" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.SelectFromDual"></property>
+		<property name="content">
+			<value><![CDATA[select test_seq.nextval from USER_DUAL
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.single.CommonService"></property>
+	</bean>
+	
+	<bean id="com.tydic.test.timeout" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.timeout"></property>
+		<property name="content">
+			<value><![CDATA[update vds.TEST_A_PARTITIONS set name='peter' where name='peter'
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.single.CommonService"></property>
+	</bean>
+</beans>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+	
+	<bean id="com.tydic.test.perform.SelectFromTestAPartitions" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.perform.SelectFromTestAPartitions"></property>
+		<property name="content">
+			<value><![CDATA[SELECT id,age,name,birthdate,marriagedate,profile,story,notes,classified FROM test_a_partitions where id=?
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.single.CommonService"></property>
+	</bean>
+	<bean id="com.tydic.test.perform.UpdateTestAPartitions" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.perform.UpdateTestAPartitions"></property>
+		<property name="content">
+			<value><![CDATA[update vds.TEST_A_PARTITIONS set age=20 where id = 100001
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.UpdateType1"></property>
+	</bean>
+	<bean id="com.tydic.test.perform.Insert2TestAPartitions" class="com.tydic.vds.spring.PredefinedProcedure">
+		<property name="name" value="com.tydic.test.perform.Insert2TestAPartitions"></property>
+		<property name="content">
+			<value><![CDATA[insert into test_a_partitions(id,age,name,birthdate,marriagedate,profile,story,notes,classified) values(?,?,?,?,?,?,?,?,?)
+			]]></value>
+		</property>
+		<property name="executorClazz" value="com.tydic.vds.service.sharding.InsertType2"></property>
+	</bean>
+</beans>

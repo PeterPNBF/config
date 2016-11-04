@@ -1,0 +1,26 @@
+# This is the configuring for centralized configuration
+
+#root of data index and env path in zookeeper node structure
+#if root configurated but no data index and env, by default, use $root/data $root/index and $root/env.
+#u can change default to your project name for avoiding repetition of configuration name.
+#if root unconfigurated, by default use /Configuration/default
+#root=/Configuration/pppp
+
+#data=/Configuration/ppp/data
+#index=/Configuration/ppp/index
+#env=/Configuration/ppp/env
+
+#if hosts unconfigurated, use 127.0.0.1:2181 to connect to zookeeper server
+hosts=172.168.1.215:2281
+#max index size, if index data size exceed the number(bit),keep the latest 100 rows in index.
+#max-index-size=102400
+#max data size.
+#max-data-size=1048576
+#default version name
+#default_version=default
+#path searching for index
+#index-home-env-name=INDEX_HOME
+#data node name pattern, e.g. vds.xml_6687cb15-eb85-4d3d-95b6-5cc208dafc0a_00
+#data-node-pattern=.*\\..*_.*
+#config-name=testContext.xml
+config-path=vdsConfig
